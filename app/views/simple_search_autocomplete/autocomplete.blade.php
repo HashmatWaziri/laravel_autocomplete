@@ -27,7 +27,7 @@ z-index:10000;
  
  
  
-<h2>Laravel Autocomplete</h2>
+<h2>Laravel Autocomplete form Database data</h2>
 <?= Form::open() ?>
 
 <?= Form::label('auto', 'Find a color: ') ?>
