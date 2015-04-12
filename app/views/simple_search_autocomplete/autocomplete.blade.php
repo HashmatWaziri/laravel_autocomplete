@@ -93,15 +93,9 @@ z-index:10000;
                    </div>       
     @endif
 
-     
-
-
-
-
-
 <script type="text/javascript">
 $(function(){
- $("#auto").keyup(function(){
+
 $("#auto").autocomplete({
 source:"{{URL('getdata')}}",
 minLength: 3
@@ -113,7 +107,6 @@ minLength: 3
 });
 $("#auto").autocomplete("widget").height(200);
  });
-});
 </script>
 </body>
 </html>

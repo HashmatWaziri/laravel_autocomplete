@@ -65,6 +65,7 @@ foreach ($data as $v) {
 
 
 
-}
+
 return Response::json(array('value' => $v->word ));
+}
 });
