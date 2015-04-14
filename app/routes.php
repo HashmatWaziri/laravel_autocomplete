@@ -59,13 +59,10 @@ return View::make('simple_search_autocomplete.autocomplete')->with("contents", $
 Route::any('getdata', function()
 {
 $term = Input::get('term');
-$data = DB::table("words")->where('word', 'LIKE', $term.'%')->get();
-$return_array = array();
+$data = DB::table("words")->where('word', 'LIKE', $term.'%')->orderby('word')->take(5)->skip(0)->get();
+
 foreach ($data as $v) {
-
-
-
-
 return Response::json(array('value' => $v->word ));
 }
+
 });
