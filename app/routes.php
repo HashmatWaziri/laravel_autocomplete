@@ -18,16 +18,11 @@ Route::get('/', function()
 });
 
 
-
-
-Route::get('/results', 'SearchController@autocomplete');
-
-
       
 Route::get('/results', function(){
-    $keyword = Input::get('words');        
-       $models = Word::where('word', '=', $keyword)->get();
-        $count = count($models);
+$keyword = Input::get('words');
+$models = Word::where('word', '=', $keyword)->orderby('word')->take(10)->skip(0)->get();
+$count = count($models);
         
         return View::make('/results')->with("contents", $models)->with("counts", $count);
 });
@@ -35,34 +30,77 @@ Route::get('/results', function(){
 
 
 
+Route::any('/dictionary/index', function(){
 
-
-
-Route::any('/Dictionary/index', function(){
-
-return View::make('/Dictionary/index');
-
+$keyword = Input::get('auto');        
+ $models = Word::where('word', '=', $keyword)->orderby('word')->take(10)->skip(0)->get();
+ $count = count($models);
+return View::make('/Dictionary/index')->with("contents", $models)->with("counts", $count);
 
 });
 
 
-Route::any('autocomplete', function()
-{
+
+
+
+Route::any('index', function(){
  
  $keyword = Input::get('auto');        
-       $models = Word::where('word', '=', $keyword)->get();
-        $count = count($models);
+ $models = Word::where('word', '=', $keyword)->orderby('word')->take(10)->skip(0)->get();
+ $count = count($models);
+ return View::make('Dictionary.index')->with("contents", $models)->with("counts", $count);
+
+});
+
+
+
+
+Route::POST('words/means/', function(){
  
-return View::make('simple_search_autocomplete.autocomplete')->with("contents", $models)->with("counts", $count);
-});
-
-Route::any('getdata', function()
-{
-$term = Input::get('term');
-$data = DB::table("words")->where('word', 'LIKE', $term.'%')->orderby('word')->take(5)->skip(0)->get();
-
-foreach ($data as $v) {
-return Response::json(array('value' => $v->word ));
-}
+ $keyword = Str::lower(Input::get('auto'));        
+ $models = Word::where('word', '=', $keyword)->orderby('word')->take(10)->skip(0)->get();
+ $count = count($models);
+ return View::make('Dictionary.definition.means')->with("contents", $models)->with("counts", $count); 
 
 });
+
+
+
+// 3: create this route to process the user input (Input::get('term')) in the database query.
+
+Route::any('getdata', function(){
+
+ $term = Str::lower(Input::get('term'));
+ 
+ // 4: check if any matches found in the database table 
+
+ $data = DB::table("words")->distinct()->select('word')->where('word', 'LIKE', $term.'%')->groupBy('word')->take(10)->get();
+ foreach ($data as $v) {
+ $return_array[] = array('value' => $v->word);
+  }
+  // if matches found it first create the array of the result and then convert it to json format so that 
+  // it can be processed in the autocomplete script
+ return Response::json($return_array);
+
+ });
+
+
+
+
+
+Route::any('/thesaurus', function(){
+ 
+ $keyword = Str::lower(Input::get('auto'));        
+ $models = Word::where('word', '=', $keyword)->orderby('word')->take(10)->skip(0)->get();
+ $count = count($models);
+ return View::make('Dictionary.synonymns.synonyms')->with("contents", $models)->with("counts", $count);
+
+});
+
+
+
+
+
+
+
+

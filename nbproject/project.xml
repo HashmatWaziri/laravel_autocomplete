@@ -10,6 +10,7 @@
             <word>endforeach</word>
             <word>endif</word>
             <word>enforeach</word>
+            <word>پښتو</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

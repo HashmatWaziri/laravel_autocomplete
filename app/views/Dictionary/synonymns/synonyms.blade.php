@@ -8,9 +8,7 @@
 <link rel="stylesheet" href="//codeorigin.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 <script src="{{URL::asset('js/modernizr.js')}}"></script> <!-- Modernizr -->
 
-<style>
-.ui-autocomplete { max-height: 200px; overflow-y: scroll; overflow-x: hidden;}
-</style>
+
 
 
 <body>
